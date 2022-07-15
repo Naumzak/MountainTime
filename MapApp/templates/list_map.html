@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a href="{% url 'main_menu' %}">Main menu</a>
+<br>
+{% for map in maps %}
+    <a href="{% url 'edit_map' %}?map={{ map.pk }}">{{ map.name }}</a>
+{% endfor %}
+<form action="{% url 'create_map' %}" method="get">
+   {% csrf_token %}
+  <label for="POST-name">New Map</label>
+  <input id="POST-name" type="text" name="name">
+  <input type="submit" value="Create">
+</form>
+</body>
+</html>

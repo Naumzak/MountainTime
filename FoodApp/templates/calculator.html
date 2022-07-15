@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>How to create searchable select box</title>
+    <!-- JS for jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- CSS for searching -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <!-- JS for searching -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        // .js-example-basic-single declare this class into your select box
+        $(document).ready(function () {
+            $('.js-example-basic-single').select2();
+        });
+    </script>
+      <style type="text/css">
+   TABLE {
+    width: 300px; /* Ширина таблицы */
+    border-collapse: collapse; /* Убираем двойные линии между ячейками */
+   }
+   TD, TH {
+    padding: 3px; /* Поля вокруг содержимого таблицы */
+    border: 1px solid black; /* Параметры рамки */
+   }
+   TH {
+    background: #b0e0e6; /* Цвет фона */
+   }
+    </style>
+</head>
+<body>
+<a href="{% url 'calculators_list' %}">List</a>
+<a href="{% url 'main_menu' %}">Main menu</a>
+<form action="{% url 'add_food' %}?calculator={{ food_list_id }}" method="post">
+{% csrf_token %}
+<div style="min-width: 500px; max-width: 800px; float: left; margin: 50px">
+{% for day_number, plan_for_day in ready_food_list.items %}
+    <table style="min-width: 500px;">
+        {% for meal, portion in plan_for_day.items  %}
+            <tr>
+
+                <td>
+                    <input type="radio" id="day-and-meal"
+                           name="meal" value="{{ meal }}-{{ day_number }}" required>
+                    <label for="day-and-meal">{{ meal }}</label>
+                </td>
+                <td>
+                    {% for item in portion.0 %}
+                        {{ item.food}} | {{ item.weight }}g | {{ item.cals }} cals
+                        <br>
+                            <form action="{% url 'delete_food' %}?calculator={{ food_list_id }}" method="post">
+                            {% csrf_token %}
+                            <button name="delete" type="submit" value="{{ item.pk }}">Delete</button>
+                        </form>
+                        <br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% with name=0 %}
+                        cals = {{ portion.1 }}
+                        <br>
+                        weight = {{ portion.2 }}g
+                    {% endwith %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+{% endfor %}
+<form action="{% url 'add_day' %}?calculator={{ food_list_id }}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="New day">
+</form>
+<form action="{% url 'delete_day' %}?calculator={{ food_list_id }}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Delete day">
+</form>
+</div>
+<div style="max-width: 500px; float: left; margin: 50px">
+    <label for="item">Choose a food:</label>
+    <select name="item" id="item" class="js-example-basic-single">
+        {% for i in food_list %}
+            <option value="{{ i.pk }}">{{ i.fooditem }} | {{ i.per100grams }} | {{ i.cals_per100grams }} cals
+                | {{ i.kj_per100grams }} kj
+            </option>
+        {% endfor %}
+    </select>
+    <br>
+    <label for="weight">Weight:</label><br>
+    <input type="text" id="weight" name="weight" value=100>
+    <input type="submit" value="Submit">
+</div>
+</form>
+</body>
+</html>

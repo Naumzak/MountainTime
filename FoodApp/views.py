@@ -4,6 +4,8 @@ from django.shortcuts import render, redirect
 from django.views import View
 from FoodApp.make_meal_plan import MealPlan, AddFoodToPlan, DeleteFoodFromPlan
 from FoodApp.models import FoodCals, FoodList, Portion
+from django.contrib.auth.decorators import login_required
+
 
 
 class EditCalculator(View):

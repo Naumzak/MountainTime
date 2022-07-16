@@ -15,13 +15,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.auth.decorators import login_required, permission_required
 from django.urls import path, include
 from FoodApp.views import *
 
-urlpatterns = [path('edit/', EditCalculator.as_view(), name='update_calculator'),
+urlpatterns = [path('edit/', login_required(EditCalculator.as_view()), name='update_calculator'),
                path('add-item/', AddItemCalculator.as_view(), name='add_food'),
                path('delete-item/', DeleteItemCalculator.as_view(), name='delete_food'),
-               path('', ListCalculators.as_view(), name='calculators_list'),
+               path('', login_required(ListCalculators.as_view()), name='calculators_list'),
                path('create/', CreateCalculatorView.as_view(), name='create_calculator'),
                path('add-day/', AddDayCalculator.as_view(), name='add_day'),
                path('delete-day/', DeleteDayCalculator.as_view(), name='delete_day'),

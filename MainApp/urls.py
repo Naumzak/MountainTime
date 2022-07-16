@@ -20,5 +20,6 @@ from MainApp.views import *
 urlpatterns = [
     path('map/', include('MapApp.urls')),
     path('calculator/', include('FoodApp.urls')),
-    path('', MainMenu.as_view(), name='main_menu')
+    path('', MainMenu.as_view(), name='main_menu'),
+    path('accounts/login/', Login.as_view(), name='login')
 ]

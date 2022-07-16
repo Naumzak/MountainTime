@@ -32,8 +32,7 @@
 <body>
 <a href="{% url 'calculators_list' %}">List</a>
 <a href="{% url 'main_menu' %}">Main menu</a>
-<form action="{% url 'add_food' %}?calculator={{ food_list_id }}" method="post">
-{% csrf_token %}
+<form id="add_food" action="{% url 'add_food' %}?calculator={{ food_list_id }}" method="post">{% csrf_token %}</form>
 <div style="min-width: 500px; max-width: 800px; float: left; margin: 50px">
 {% for day_number, plan_for_day in ready_food_list.items %}
     <table style="min-width: 500px;">
@@ -41,7 +40,7 @@
             <tr>
 
                 <td>
-                    <input type="radio" id="day-and-meal"
+                    <input type="radio" id="day-and-meal" form="add_food"
                            name="meal" value="{{ meal }}-{{ day_number }}" required>
                     <label for="day-and-meal">{{ meal }}</label>
                 </td>
@@ -79,7 +78,7 @@
 </div>
 <div style="max-width: 500px; float: left; margin: 50px">
     <label for="item">Choose a food:</label>
-    <select name="item" id="item" class="js-example-basic-single">
+    <select name="item" id="item" class="js-example-basic-single" form="add_food">
         {% for i in food_list %}
             <option value="{{ i.pk }}">{{ i.fooditem }} | {{ i.per100grams }} | {{ i.cals_per100grams }} cals
                 | {{ i.kj_per100grams }} kj
@@ -88,9 +87,8 @@
     </select>
     <br>
     <label for="weight">Weight:</label><br>
-    <input type="text" id="weight" name="weight" value=100>
-    <input type="submit" value="Submit">
+    <input type="text" id="weight" name="weight" value=100 form="add_food">
+    <input type="submit" value="Submit" form="add_food">
 </div>
-</form>
 </body>
 </html>
